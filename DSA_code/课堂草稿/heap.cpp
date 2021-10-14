@@ -4,7 +4,7 @@ using namespace std;
 template<class T>
 class MinHeap {
 public:
-	T * heapArray;   //´æ·ÅÕâ¸öÊı×é
+	T * heapArray;   //å­˜æ”¾è¿™ä¸ªæ•°ç»„
 	int CurrentSize, MaxSize;
 	void BuildHeapDown();
 	void BuildHeapUp();
@@ -15,11 +15,11 @@ public:
 	int leftchild(int pos)const;
 	int rightchild(int pos)const;
 	int Parent(int pos) const;
-	bool Remove(int pos, T &node);  //É¾³ı¸ø¶¨ÏÂ±êÔªËØ
-	bool Insert(const T &newNode);  //²åÈëĞÂÔªËØ
-	T &RemoveMin();                 //É¾³ı×îĞ¡Öµ(¶Ñ¶¥)
-	void SiftUp(int position);      //ÏòÉÏµ÷Õû
-	void SiftDown(int left);        //É¸Ñ¡·¨
+	bool Remove(int pos, T &node);  //åˆ é™¤ç»™å®šä¸‹æ ‡å…ƒç´ 
+	bool Insert(const T &newNode);  //æ’å…¥æ–°å…ƒç´ 
+	T &RemoveMin();                 //åˆ é™¤æœ€å°å€¼(å †é¡¶)
+	void SiftUp(int position);      //å‘ä¸Šè°ƒæ•´
+	void SiftDown(int left);        //ç­›é€‰æ³•
 };
 template<class T>
 MinHeap<T>::MinHeap(const int MaxSize_) {
@@ -30,20 +30,20 @@ MinHeap<T>::MinHeap(const int MaxSize_) {
 		heapArray[i] = rand();
 	}
 	CurrentSize = MaxSize;
-	BuildHeapDown();     //Á½ÖÖ½¨¶Ñ·½·¨¶¼¿ÉÒÔ
+	BuildHeapDown();     //ä¸¤ç§å»ºå †æ–¹æ³•éƒ½å¯ä»¥
 }
 template<class T>
-void MinHeap<T>::BuildHeapUp() {     //´Óµ×ÍùÉÏµ÷Õû³É×îĞ¡¶Ñ
+void MinHeap<T>::BuildHeapUp() {     //ä»åº•å¾€ä¸Šè°ƒæ•´æˆæœ€å°å †
 	for (int i = CurrentSize / 2 - 1; i >= 0; i--)
 		SiftDown(i);
 }
 template<class T>
-void MinHeap<T>::BuildHeapDown() {     //´ÓÉÏÏòÏÂµ÷Õû³É×îĞ¡¶Ñ
+void MinHeap<T>::BuildHeapDown() {     //ä»ä¸Šå‘ä¸‹è°ƒæ•´æˆæœ€å°å †
 	for (int i = 0; i < CurrentSize; i++)
 		SiftUp(i);
 }
 template<class T>
-bool MinHeap<T>::isLeaf(int pos)const {   //ÅĞ¶ÏÊÇ·ñÎªÒ¶×Ó½áµã
+bool MinHeap<T>::isLeaf(int pos)const {   //åˆ¤æ–­æ˜¯å¦ä¸ºå¶å­ç»“ç‚¹
 	return (pos >= CurrentSize / 2) && (pos < CurrentSize);
 }
 template<class T>
@@ -53,11 +53,11 @@ int MinHeap<T>::rightchild(int pos)const { return 2 * pos + 2; }
 template<class T>
 int MinHeap<T>::Parent(int pos)const { return (pos - 1) / 2; }
 
-//--SiftDown---ÏòÏÂµ÷Õû³É¶Ñ£º°Ñ*pÏò¡¾ÏÂ¡¿µ÷Õû,Ö±µ½ max(*left, *right) > *p----
+//--SiftDown---å‘ä¸‹è°ƒæ•´æˆå †ï¼šæŠŠ*på‘ã€ä¸‹ã€‘è°ƒæ•´,ç›´åˆ° max(*left, *right) > *p----
 template<class T>
 void MinHeap<T>::SiftDown(int position) {
-	int i = position, down = 2 * i + 1;   //iÖ¸Ïòµ±Ç°½áµã,downÖ¸Ïòi->left
-	T temp = heapArray[i];    //´ıÏÂÒÆÔªËØ
+	int i = position, down = 2 * i + 1;   //iæŒ‡å‘å½“å‰ç»“ç‚¹,downæŒ‡å‘i->left
+	T temp = heapArray[i];    //å¾…ä¸‹ç§»å…ƒç´ 
 	while (down < CurrentSize) {
 		if ((down < CurrentSize - 1) && (heapArray[down + 1] < heapArray[down]))
 			down++;                 // down = left < right ? left : right;
@@ -65,45 +65,45 @@ void MinHeap<T>::SiftDown(int position) {
 			heapArray[i] = heapArray[down];    // *i = *down
 			i = down; down = 2 * i + 1;
 		}
-		else break;      //×óÓÒdownÈ«¶¼´óÓÚi,ËµÃ÷tempÒÑÒÆµ½ÊÊµ±Î»ÖÃ!
+		else break;      //å·¦å³downå…¨éƒ½å¤§äºi,è¯´æ˜tempå·²ç§»åˆ°é€‚å½“ä½ç½®!
 	}
 	heapArray[i] = temp;
 }
-//-----SiftUp---ÏòÉÏµ÷Õû³É¶Ñ£º°Ñ*pÏò¡¾ÉÏ¡¿µ÷Õû,Ö±µ½ *parent < *p---------------
+//-----SiftUp---å‘ä¸Šè°ƒæ•´æˆå †ï¼šæŠŠ*på‘ã€ä¸Šã€‘è°ƒæ•´,ç›´åˆ° *parent < *p---------------
 template<class T>
 void MinHeap<T>::SiftUp(int position) {   //
 	int i = position, parent = Parent(position);
-	T temp = heapArray[i];        // »º´æ*i
-	while ((heapArray[parent] > temp) && (i > 0)) {   //Èç¹û*Parent´óĞ©
+	T temp = heapArray[i];        // ç¼“å­˜*i
+	while ((heapArray[parent] > temp) && (i > 0)) {   //å¦‚æœ*Parentå¤§äº›
 		heapArray[i] = heapArray[parent];             // *i = *Parent
-		i = Parent(i);            //ÔİÊ±Ã»±ØÒª*parent = *i,ºóÃæ»¹»á»»
+		i = Parent(i);            //æš‚æ—¶æ²¡å¿…è¦*parent = *i,åé¢è¿˜ä¼šæ¢
 		parent = Parent(i);
 	}
 	heapArray[i] = temp;
 }
-//-----------Insert:²åÈëÔªËØ,ÏÈ²åÔÚ×îÄ©CurrentSize,ÔÙSiftUp-------------
+//-----------Insert:æ’å…¥å…ƒç´ ,å…ˆæ’åœ¨æœ€æœ«CurrentSize,å†SiftUp-------------
 template<class T>
 bool MinHeap<T>::Insert(const T &newNode) {
 	if (CurrentSize >= MaxSize) return false;
-	heapArray[CurrentSize] = newNode;  //newNode¼ÓÔÚÊı×é×îºó
-	SiftUp(CurrentSize++);   //°ÑCurrentSizeºÅÔªËØÍùÉÏËÍµ½¸Ã´ôµÄµØ·½
+	heapArray[CurrentSize] = newNode;  //newNodeåŠ åœ¨æ•°ç»„æœ€å
+	SiftUp(CurrentSize++);   //æŠŠCurrentSizeå·å…ƒç´ å¾€ä¸Šé€åˆ°è¯¥å‘†çš„åœ°æ–¹
 	return true;
 }
-//-----------RemoveMin:ÒÆ³ı×îĞ¡Öµ,×îÄ©ÒÆÉÏÀ´,ÔÙSiftDown--------------
+//-----------RemoveMin:ç§»é™¤æœ€å°å€¼,æœ€æœ«ç§»ä¸Šæ¥,å†SiftDown--------------
 template<class T>
 T &MinHeap<T>::RemoveMin() {
-	if (CurrentSize <= 0) exit(1);    //¿Õ¶Ñ
+	if (CurrentSize <= 0) exit(1);    //ç©ºå †
 	T temp = heapArray[0];
 	heapArray[0] = heapArray[--CurrentSize];
 	SiftDown(0);
-	return temp;    //·µ»ØÉ¾³ıµÄÄÇ¸öÔªËØ?
+	return temp;    //è¿”å›åˆ é™¤çš„é‚£ä¸ªå…ƒç´ ?
 }
-//-----Remove:É¾³ıposÎ»ÖÃµÄÔªËØ,½«Æä·µ»Øµ½node----------------------
+//-----Remove:åˆ é™¤posä½ç½®çš„å…ƒç´ ,å°†å…¶è¿”å›åˆ°node----------------------
 template<class T>
 bool MinHeap<T>::Remove(int pos, T &node) {
 	if ((pos < 0) || (pos >= CurrentSize)) return false;
 	T temp = heapArray[pos];
-	heapArray[pos] = heapArray[--CurrentSize];  //Ä©Î²µÄÔªËØÒÆÉÏÀ´
+	heapArray[pos] = heapArray[--CurrentSize];  //æœ«å°¾çš„å…ƒç´ ç§»ä¸Šæ¥
 	SiftUp(pos);
 	SiftDown(pos);
 	node = temp;

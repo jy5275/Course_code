@@ -13,16 +13,16 @@ class CNode {
 	T val;
 	CNode<T> *left, *right, *parent;
 public:
-	CNode();  //ÎŞ²Î¹¹Ôìº¯Êı
+	CNode();  //æ— å‚æ„é€ å‡½æ•°
 	CNode(const T &val_);
 	CNode(const T &val_, CNode<T> *l, CNode<T> *r);
 	T value()const { return val; }
-	CNode<T> *leftchild()const;    //·µ»Ø×ó×ÓÊ÷Root
-	CNode<T> *rightchild()const;   //·µ»ØÓÒ×ÓÊ÷Root
-	void setLeftChild(CNode<T>*);  //ÉèÖÃ×ó×ÓÊ÷
-	void setRightChild(CNode<T>*); //ÉèÖÃ×ó×ÓÊ÷
+	CNode<T> *leftchild()const;    //è¿”å›å·¦å­æ ‘Root
+	CNode<T> *rightchild()const;   //è¿”å›å³å­æ ‘Root
+	void setLeftChild(CNode<T>*);  //è®¾ç½®å·¦å­æ ‘
+	void setRightChild(CNode<T>*); //è®¾ç½®å·¦å­æ ‘
 	void setValue(const T &val);
-	bool isLeaf()const;   //ÅĞ¶ÏÊÇ·ñÎªÒ¶½Úµã
+	bool isLeaf()const;   //åˆ¤æ–­æ˜¯å¦ä¸ºå¶èŠ‚ç‚¹
 	CNode<T> &operator=(CNode<T> &CNode);
 };
 template<class T>
@@ -34,14 +34,14 @@ public:
 	bool isEmpty() const { return(root == NULL) ? true : false; }
 	CNode<T> *Root() { return root; }
 	CNode<T> *Parent(CNode<T> *rt, CNode<T> *current);
-	CNode<T> *LeftSibling(CNode<T> *current);  //×óĞÖ
-	CNode<T> *RightSibling(CNode<T> *current); //ÓÒĞÖ
+	CNode<T> *LeftSibling(CNode<T> *current);  //å·¦å…„
+	CNode<T> *RightSibling(CNode<T> *current); //å³å…„
 	void CreateTree(const T &val_, BinaryTree<T> &leftTree, BinaryTree<T> &rightTree);
-	void PreOrder(CNode<T> *rt);    //´Órt¿ªÊ¼,Ç°Ğò±éÀú¶ş²æÊ÷
-	void MidOrder(CNode<T> *rt);     //´Órt¿ªÊ¼,ÖĞĞò±éÀú¶ş²æÊ÷
-	void PostOrder(CNode<T> *rt);   //´Órt¿ªÊ¼,ºóĞò±éÀú¶ş²æÊ÷
-	void LevelOrder(CNode<T> *rt);  //²ã´ÎÖÜÓÎ
-	void DeleteBinaryTree(CNode<T> *rt) {  //É¾³ırt¿ªÊ¼µÄ¶ş²æÊ÷
+	void PreOrder(CNode<T> *rt);    //ä»rtå¼€å§‹,å‰åºéå†äºŒå‰æ ‘
+	void MidOrder(CNode<T> *rt);     //ä»rtå¼€å§‹,ä¸­åºéå†äºŒå‰æ ‘
+	void PostOrder(CNode<T> *rt);   //ä»rtå¼€å§‹,ååºéå†äºŒå‰æ ‘
+	void LevelOrder(CNode<T> *rt);  //å±‚æ¬¡å‘¨æ¸¸
+	void DeleteBinaryTree(CNode<T> *rt) {  //åˆ é™¤rtå¼€å§‹çš„äºŒå‰æ ‘
 		if (rt != NULL) {  //Meaningless for !root
 			DeleteBinaryTree(rt->left);
 			DeleteBinaryTree(rt->right);
@@ -49,7 +49,7 @@ public:
 		}
 	}
 };
-template<class T>            //Search for the parent CNode. O(n),µİ¹éÑ°ÕÒ¸¸½Úµã
+template<class T>            //Search for the parent CNode. O(n),é€’å½’å¯»æ‰¾çˆ¶èŠ‚ç‚¹
 CNode<T> *BinaryTree<T>::Parent(CNode<T> *rt, CNode<T> *current) {
 	if (!rt) return NULL;    //Parent return NULL when going to the wrong biforks
 	if (rt->leftchild() == curent || rt->rightchild() == current) 
@@ -61,8 +61,8 @@ CNode<T> *BinaryTree<T>::Parent(CNode<T> *rt, CNode<T> *current) {
 	if (p) return p;
 	return NULL;
 }
-template<class T>          //¡¾ÓÒ×ÓÑ¹Õ»,×óÂ·ÏÂ½µ;×ó¿Õµ¯Õ»,·ÃÓÒµ½¿Õ¡¿
-void BinaryTree<T>::PreOrder(CNode<T> *root) {  //´Óroot¿ªÊ¼ÉîËÑÇ°ĞòÖÜÓÎ
+template<class T>          //ã€å³å­å‹æ ˆ,å·¦è·¯ä¸‹é™;å·¦ç©ºå¼¹æ ˆ,è®¿å³åˆ°ç©ºã€‘
+void BinaryTree<T>::PreOrder(CNode<T> *root) {  //ä»rootå¼€å§‹æ·±æœå‰åºå‘¨æ¸¸
 	stack<CNode<T>*> aStack;
 	CNode<T> *pointer = root;
 	aStack.push(NULL);
@@ -78,16 +78,16 @@ void BinaryTree<T>::PreOrder(CNode<T> *root) {  //´Óroot¿ªÊ¼ÉîËÑÇ°ĞòÖÜÓÎ
 		}
 	}
 }
-template<class T>          //¡¾µ±Ç°Ñ¹Õ»,±éÀú×óÊ÷;µ¯Õ»·ÃÎÊ,±éÀúÓÒÊ÷¡¿
-void BinaryTree<T>::MidOrder(CNode<T> *rt) {  //ÉîËÑÖĞĞòÖÜÓÎ
-	stack<CNode<T>*> aStack;        //ĞèÒª¿ç½ÚµãµÄË¼Â·,²»ÄÜ¾ÖÏŞÔÚµ¥¸ö½ÚµãÉÏ!
+template<class T>          //ã€å½“å‰å‹æ ˆ,éå†å·¦æ ‘;å¼¹æ ˆè®¿é—®,éå†å³æ ‘ã€‘
+void BinaryTree<T>::MidOrder(CNode<T> *rt) {  //æ·±æœä¸­åºå‘¨æ¸¸
+	stack<CNode<T>*> aStack;        //éœ€è¦è·¨èŠ‚ç‚¹çš„æ€è·¯,ä¸èƒ½å±€é™åœ¨å•ä¸ªèŠ‚ç‚¹ä¸Š!
 	CNode<T> *p= rt;
-	while (!aStack.empty() || p) {   //pÎª¿ÕÔòĞèÒªµ¯Õ»¸øp¸³Öµ;µ«Èç¹ûÕ»Ò²Îª¿Õ,¾ÍbreakÁË
-		if (p) {           //MODE = Default¡ª¡ªµ±Ç°Ñ¹Õ»,±éÀú×óÊ÷
+	while (!aStack.empty() || p) {   //pä¸ºç©ºåˆ™éœ€è¦å¼¹æ ˆç»™pèµ‹å€¼;ä½†å¦‚æœæ ˆä¹Ÿä¸ºç©º,å°±breakäº†
+		if (p) {           //MODE = Defaultâ€”â€”å½“å‰å‹æ ˆ,éå†å·¦æ ‘
 			aStack.push(p);
 			p = p->leftchild();   //If leftTree is empty, p set NULL!
 		}
-		else {             //MODE=¿Õ¡ª¡ªµ¯Õ»·ÃÎÊ,±éÀúÓÒÊ÷
+		else {             //MODE=ç©ºâ€”â€”å¼¹æ ˆè®¿é—®,éå†å³æ ‘
 			p = aStack.top();     //P necessarily follows current CNode!
 			aStack.pop();  //aStack.top() always remember where to go when leftTree empty
 			Visit(p);
@@ -95,7 +95,7 @@ void BinaryTree<T>::MidOrder(CNode<T> *rt) {  //ÉîËÑÖĞĞòÖÜÓÎ
 		}
 	}
 }
-enum Tags { Left, Right };    //ºÜÂé·³µÄÉîËÑºóĞòÖÜÓÎ
+enum Tags { Left, Right };    //å¾ˆéº»çƒ¦çš„æ·±æœååºå‘¨æ¸¸
 template<class T>
 class StackElement {
 public:
@@ -105,30 +105,30 @@ public:
 };
 template<class T>
 void BinaryTree<T>::PostOrder(CNode<T> *rt) {
-	stack<StackElement<T>> aStack;            //ĞèÒª¿ç½ÚµãµÄË¼Â·,²»ÄÜ¾ÖÏŞÔÚµ¥¸ö½ÚµãÉÏ!
+	stack<StackElement<T>> aStack;            //éœ€è¦è·¨èŠ‚ç‚¹çš„æ€è·¯,ä¸èƒ½å±€é™åœ¨å•ä¸ªèŠ‚ç‚¹ä¸Š!
 	CNode<T> *p = rt;
 	while (!aStack.empty() || p) {
-		if (p) {          //MODE = ÓĞ×óÊ÷¡ª¡ª¡¾p-LÑ¹Õ»,±éÀú×óÊ÷¡¿
+		if (p) {          //MODE = æœ‰å·¦æ ‘â€”â€”ã€p-Lå‹æ ˆ,éå†å·¦æ ‘ã€‘
 			aStack.push(StackElement<T>(p, Left));
 			p = p->leftchild();
 		}
-		else {            //MODE = ÎŞ×óÊ÷¡ª¡ª¡¾µ¯Õ»Ñ¹R,±éÀúÓÒÊ÷¡¿
+		else {            //MODE = æ— å·¦æ ‘â€”â€”ã€å¼¹æ ˆå‹R,éå†å³æ ‘ã€‘
 			p = aStack.top().p;        //1.Redirect p to the Visiting CNode
-			if (aStack.top().tag == Left) {         //pµÄ×óÊ÷±éÀúÍê±Ï,½Ó×Å±éÀúÓÒÊ÷
+			if (aStack.top().tag == Left) {         //pçš„å·¦æ ‘éå†å®Œæ¯•,æ¥ç€éå†å³æ ‘
 				aStack.pop();                       //2.pop(p,left)
 				aStack.push(StackElement<T>(p, Right));   //3.push(p,right)
 				p = p->rightchild();
 			}
-			else if (aStack.top().tag == Right) {   //pµÄÓÒÊ÷±éÀúÍê±Ï,·ÃÎÊ²¢ÖÃpÎªÏÌÓã
-				aStack.pop();                       //¡¾µ¯Õ»·ÃÎÊ,ÏÌÓãµÈ´ı¡¿
+			else if (aStack.top().tag == Right) {   //pçš„å³æ ‘éå†å®Œæ¯•,è®¿é—®å¹¶ç½®pä¸ºå’¸é±¼
+				aStack.pop();                       //ã€å¼¹æ ˆè®¿é—®,å’¸é±¼ç­‰å¾…ã€‘
 				Visit(p);                           //3.Visit
-				p = NULL;      //ÖÃpÎªÏÌÓã,·´ÕıÏÂÒ»Ñ­»·ÓÖ»á±»¸³ÖµÎªs.top()
+				p = NULL;      //ç½®pä¸ºå’¸é±¼,åæ­£ä¸‹ä¸€å¾ªç¯åˆä¼šè¢«èµ‹å€¼ä¸ºs.top()
 			}
 		}
 	}
 }
 template<class T>
-void BinaryTree<T>::LevelOrder(CNode<T> *rt) {   //¹ãËÑÖğ²ãÖÜÓÎ
+void BinaryTree<T>::LevelOrder(CNode<T> *rt) {   //å¹¿æœé€å±‚å‘¨æ¸¸
 	while (1) {
 		queue<CNode<T>*> aQueue;
 		CNode<T> *p = rt;

@@ -12,7 +12,7 @@
 #include<fstream>
 using namespace std;
 int a[1002], n, t, cache[22][1002];
-int combination(int n_case, int t_case) { //Ç°n_case¸öÕûÊý¼ÓºÍÎªt_caseµÄ×éºÏ·½Ê½
+int combination(int n_case, int t_case) { //å‰n_caseä¸ªæ•´æ•°åŠ å’Œä¸ºt_caseçš„ç»„åˆæ–¹å¼
 	if (t_case == 0)return 1;
 	if (n_case == 0)return 0;
 	if (cache[n_case][t_case] != -1) return cache[n_case][t_case];
@@ -33,10 +33,10 @@ int main() {
 		cin >> a[i];
 	clock_t startTime = clock();
 	
-	//-----------µÝ¹é·½°¸---------------------------------
+	//-----------é€’å½’æ–¹æ¡ˆ---------------------------------
 	memset(cache, -1, sizeof(cache));
 	cout << combination(n, t) << endl;
-	//-----------¶¯¹æ·½°¸---------------------------------
+	//-----------åŠ¨è§„æ–¹æ¡ˆ---------------------------------
 	memset(cache[0], 0, sizeof(cache[0]));
 	for (int j = 0; j <= t; j++)cache[j][0] = 1;
 	for (int i = 1; i <= n; i++) {
@@ -49,8 +49,8 @@ int main() {
 	//----------------------------------------------------
 	
 	clock_t endTime = clock();
-	//cout<< "³ÌÐò¶ÎÔËÐÐÊ±¼ä:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+	//cout<< "ç¨‹åºæ®µè¿è¡Œæ—¶é—´:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 	return 0;
 }/*
- ×¢ÒâµÍ¼¶´íÎó£¡Æ©Èça[i]<=jÐ´³Éa[i]<=i,a[n_case]Ð´³Éa[n]ÕâÖÖ¾Í±­¾ßÁË,ÖðÐÐÖ´ÐÐ°ëÌì²Å·¢ÏÖµÃÁË...
+ æ³¨æ„ä½Žçº§é”™è¯¯ï¼è­¬å¦‚a[i]<=jå†™æˆa[i]<=i,a[n_case]å†™æˆa[n]è¿™ç§å°±æ¯å…·äº†,é€è¡Œæ‰§è¡ŒåŠå¤©æ‰å‘çŽ°å¾—äº†...
  */

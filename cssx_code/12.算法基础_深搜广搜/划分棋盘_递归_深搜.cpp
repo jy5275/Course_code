@@ -1,4 +1,4 @@
-//µİ¹éÖ®ÆåÅÌ·Ö¸î
+//é€’å½’ä¹‹æ£‹ç›˜åˆ†å‰²
 #include<iostream>
 #include<string>
 #include<cmath>
@@ -6,10 +6,10 @@
 #include<algorithm>
 #include<iomanip>
 using namespace std;
-int chessBoard[10][10];        //Ã¿¸ö¸ñ×ÓµÄ·ÖÊı
-double cache[15][9][9][9][9];  //´æ´¢°Ñ¾ØÕó(x1,y1)-(x2,y2)²ğÎªn·İµÄ×îĞ¡Æ½·½ºÍ
-int sum[9][9] = { 0 };         //¾ØÕó´Ó(1,1)µ½(i,j)µÄ·ÖÊıÖ®ºÍ
-int calSum(int x1, int y1, int x2, int y2) {   //Çó(x1,y1)-(x2,y2)¾ØÕóºÍ
+int chessBoard[10][10];        //æ¯ä¸ªæ ¼å­çš„åˆ†æ•°
+double cache[15][9][9][9][9];  //å­˜å‚¨æŠŠçŸ©é˜µ(x1,y1)-(x2,y2)æ‹†ä¸ºnä»½çš„æœ€å°å¹³æ–¹å’Œ
+int sum[9][9] = { 0 };         //çŸ©é˜µä»(1,1)åˆ°(i,j)çš„åˆ†æ•°ä¹‹å’Œ
+int calSum(int x1, int y1, int x2, int y2) {   //æ±‚(x1,y1)-(x2,y2)çŸ©é˜µå’Œ
 	return sum[y2][x2] - sum[y2][x1 - 1] - sum[y1 - 1][x2] + sum[y1 - 1][x1 - 1];
 }
 int myMin(double a, double b) {
@@ -18,27 +18,27 @@ int myMin(double a, double b) {
 	if (a < b)return a;
 	else return b;
 }
-double fun(int n, int x1, int y1, int x2, int y2) {   //µÃ(x1,y1)-(x2,y2)¾ØÕó·Ön·İµÄ×îĞ¡Æ½·½ºÍ
+double fun(int n, int x1, int y1, int x2, int y2) {   //å¾—(x1,y1)-(x2,y2)çŸ©é˜µåˆ†nä»½çš„æœ€å°å¹³æ–¹å’Œ
 	double sumSquare = 0;
-	if (n == 1) {     //µ¥·ÖÆåÅÌ¿é
-		if (cache[1][x1][y1][x2][y2] != -1) return cache[1][x1][y1][x2][y2];  //ÓĞ´æ´¢µ¥·Ö
-																			  //ÎŞ´æ´¢µ¥·Ö
+	if (n == 1) {     //å•åˆ†æ£‹ç›˜å—
+		if (cache[1][x1][y1][x2][y2] != -1) return cache[1][x1][y1][x2][y2];  //æœ‰å­˜å‚¨å•åˆ†
+																			  //æ— å­˜å‚¨å•åˆ†
 		int tmp = calSum(x1, y1, x2, y2);
 		sumSquare = tmp * tmp;
 		cache[1][x1][y1][x2][y2] = sumSquare;
 		return sumSquare;
 	}
-	//¶à·ÖÆåÅÌ¿é
-	if (cache[n][x1][y1][x2][y2] != -1) return cache[n][x1][y1][x2][y2];      //ÓĞ´æ´¢
-																			  //ÎŞ´æ´¢->°¤¸ö¿´£¡
+	//å¤šåˆ†æ£‹ç›˜å—
+	if (cache[n][x1][y1][x2][y2] != -1) return cache[n][x1][y1][x2][y2];      //æœ‰å­˜å‚¨
+																			  //æ— å­˜å‚¨->æŒ¨ä¸ªçœ‹ï¼
 	sumSquare = 0.111111;
-	for (int i = x1; i < x2; i++)   //ºáÇĞ·Ö×ó
+	for (int i = x1; i < x2; i++)   //æ¨ªåˆ‡åˆ†å·¦
 		sumSquare = myMin(sumSquare, fun(n - 1, x1, y1, i, y2) + fun(1, i + 1, y1, x2, y2));
-	for (int i = x1; i < x2; i++)   //ºáÇĞ·ÖÓÒ
+	for (int i = x1; i < x2; i++)   //æ¨ªåˆ‡åˆ†å³
 		sumSquare = myMin(sumSquare, fun(n - 1, i, y1, x2, y2) + fun(1, x1, y1, i + 1, y2));
-	for (int i = y1; i < y2; i++)   //×İÇĞ·ÖÉÏ
+	for (int i = y1; i < y2; i++)   //çºµåˆ‡åˆ†ä¸Š
 		sumSquare = myMin(sumSquare, fun(n - 1, x1, y1, x2, i) + fun(1, x1, i + 1, x2, y2));
-	for (int i = x1; i < x2; i++)   //×İÇĞ·ÖÏÂ
+	for (int i = x1; i < x2; i++)   //çºµåˆ‡åˆ†ä¸‹
 		sumSquare = myMin(sumSquare, fun(n - 1, x1, i, x2, y2) + fun(1, x1, y1, x2, i + 1));
 	cache[n][x1][y1][x2][y2] = sumSquare;
 	return sumSquare;

@@ -8,8 +8,8 @@ bool function(vector<int> &seq) {
 	vector<int> sub1, sub2;
 	int last = *it;
 	while (*it >= last && it != seq.begin())  --it;
-	if (*it<last) ++it;    //itµ½´ïÁËsub2Æðµã,Èç¹ûsub2,size()==0,ÔòitÈÔÔÚlast´¦
-	auto mid = it;   //midÊÇsub2Æðµã
+	if (*it<last) ++it;    //itåˆ°è¾¾äº†sub2èµ·ç‚¹,å¦‚æžœsub2,size()==0,åˆ™itä»åœ¨lastå¤„
+	auto mid = it;   //midæ˜¯sub2èµ·ç‚¹
 	for (; it != seq.end() - 1; ++it) {
 		if (*it < last) return false;
 		sub2.push_back(*it);

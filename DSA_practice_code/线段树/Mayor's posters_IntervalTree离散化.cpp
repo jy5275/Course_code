@@ -9,22 +9,22 @@
 #include<vector>
 #include<algorithm>
 using namespace std;
-/* ÕâÊÇ¸öÈËÈÏÎª±È½ÏÄÑµÄÒ»µÀÌâ
-¡¾ÀëÉ¢»¯¡¿×î¶àNÕÅº£±¨,¹²¼Æ2N¸ö¶Ëµã,ÕâÐ©¶Ëµã°ÑÇ½×î¶à·Ö³É2N-1¸öµ¥Î»Çø¼ä,¼ÓÉÏ
-¶Ëµã±¾ÉíÒ»¹²×î¶à¿É·Ö³É4N¸öµ¥Î»Çø¼ä¡£ÓÉÓÚ£º
-1. Ã¿¸öµ¥Î»Çø¼äÒªÃ´¡¾È«±»¸²¸Ç¡¿,ÒªÃ´¡¾È«²¿Â¶³ö¡¿;
-2. Ã»ÓÐÄÄ¸ö¶Ëµã»áÂäÔÚÒ»¸öµ¥Î»Çø¼äÄÚ²¿;
-3. Ã¿ÕÅº£±¨Ò»¶¨ÍêÕû¸²¸ÇÈô¸É¸öÁ¬Ðøµ¥Î»Çø¼ä¡£
-ËùÒÔÎÒÃÇ¶Ôµ¥Î»Çø¼ä(¶ø·Ç´É×©±¾Éí)½¨Á¢Ïß¶ÎÊ÷,ÕâÑù¾Í¼õÉÙÁË¶þ²æÊ÷Éî¶È,´ó´óÌáÉýÐ§ÂÊ
+/* è¿™æ˜¯ä¸ªäººè®¤ä¸ºæ¯”è¾ƒéš¾çš„ä¸€é“é¢˜
+ã€ç¦»æ•£åŒ–ã€‘æœ€å¤šNå¼ æµ·æŠ¥,å…±è®¡2Nä¸ªç«¯ç‚¹,è¿™äº›ç«¯ç‚¹æŠŠå¢™æœ€å¤šåˆ†æˆ2N-1ä¸ªå•ä½åŒºé—´,åŠ ä¸Š
+ç«¯ç‚¹æœ¬èº«ä¸€å…±æœ€å¤šå¯åˆ†æˆ4Nä¸ªå•ä½åŒºé—´ã€‚ç”±äºŽï¼š
+1. æ¯ä¸ªå•ä½åŒºé—´è¦ä¹ˆã€å…¨è¢«è¦†ç›–ã€‘,è¦ä¹ˆã€å…¨éƒ¨éœ²å‡ºã€‘;
+2. æ²¡æœ‰å“ªä¸ªç«¯ç‚¹ä¼šè½åœ¨ä¸€ä¸ªå•ä½åŒºé—´å†…éƒ¨;
+3. æ¯å¼ æµ·æŠ¥ä¸€å®šå®Œæ•´è¦†ç›–è‹¥å¹²ä¸ªè¿žç»­å•ä½åŒºé—´ã€‚
+æ‰€ä»¥æˆ‘ä»¬å¯¹å•ä½åŒºé—´(è€Œéžç“·ç –æœ¬èº«)å»ºç«‹çº¿æ®µæ ‘,è¿™æ ·å°±å‡å°‘äº†äºŒå‰æ ‘æ·±åº¦,å¤§å¤§æå‡æ•ˆçŽ‡
 
-ÀëÉ¢»¯Ö®ºó,ÕâÊµÖÊÉÏÊÇÒ»¸ö¼òµ¥µÄÇø¼ä¸üÐÂ(Ìùº£±¨Ïàµ±ÓÚÃ¿¸ö½áµã¼õÈ¥exposure),Çø¼ä
-ÇóºÍ(°Ñº£±¨Õ¼ÓÃÇø¼äexposure¼ÓÆðÀ´,0ÎªÍêÈ«¸²¸Ç,·Ç0·´Ö®)¡£
+ç¦»æ•£åŒ–ä¹‹åŽ,è¿™å®žè´¨ä¸Šæ˜¯ä¸€ä¸ªç®€å•çš„åŒºé—´æ›´æ–°(è´´æµ·æŠ¥ç›¸å½“äºŽæ¯ä¸ªç»“ç‚¹å‡åŽ»exposure),åŒºé—´
+æ±‚å’Œ(æŠŠæµ·æŠ¥å ç”¨åŒºé—´exposureåŠ èµ·æ¥,0ä¸ºå®Œå…¨è¦†ç›–,éž0åä¹‹)ã€‚
 
-QueryºÍChangeÍ¬Ê±½øÐÐ,ËùÒÔ¶ÔÕâÁ½¸ö²Ù×÷¿ÉÖ»Ð´Ò»¸öº¯Êý,µ«Ðè×¢ÒâË³Ðò±£Ö¤ÇóºÍÔÚ¼õÈ¥
-exposureÖ®Ç°½øÐÐ¡£QueryºÍChange·Ö³ÉÁ½¸öº¯Êý¿ÉÒÔÓÃ´«Í³·½·¨½â¾öµ«²»Öª»á²»»áTLE
+Queryå’ŒChangeåŒæ—¶è¿›è¡Œ,æ‰€ä»¥å¯¹è¿™ä¸¤ä¸ªæ“ä½œå¯åªå†™ä¸€ä¸ªå‡½æ•°,ä½†éœ€æ³¨æ„é¡ºåºä¿è¯æ±‚å’Œåœ¨å‡åŽ»
+exposureä¹‹å‰è¿›è¡Œã€‚Queryå’ŒChangeåˆ†æˆä¸¤ä¸ªå‡½æ•°å¯ä»¥ç”¨ä¼ ç»Ÿæ–¹æ³•è§£å†³ä½†ä¸çŸ¥ä¼šä¸ä¼šTLE
 */
 const int MAX = 10000010, MAX_POST = 10010;
-int newTree[MAX];      //µÚi¿é´É×©ÊÇµÚnewTree[i]¸ö×ÓÇø¼äµÄÆðÊ¼µØÖ·
+int newTree[MAX];      //ç¬¬iå—ç“·ç –æ˜¯ç¬¬newTree[i]ä¸ªå­åŒºé—´çš„èµ·å§‹åœ°å€
 bitset<MAX> visited;
 class CNode {
 public:
@@ -36,16 +36,16 @@ int Right(int n) { return 2 * n + 2; }
 
 void BuildTree(int root, int L, int R) {
 	Wall[root].L = L, Wall[root].R = R, Wall[root].exposure = R - L + 1;
-	if (L == R)return;         //Ò¶×Ó½áµã (Wall[root].R == Wall[root].L == R == L)
+	if (L == R)return;         //å¶å­ç»“ç‚¹ (Wall[root].R == Wall[root].L == R == L)
 	BuildTree(Left(root), L, (L + R) / 2);
 	BuildTree(Right(root), (L + R) / 2 + 1, R);
 }
 
-int Paste(int root, int s, int e) {    //°Ñposter[s, e]ÌùÔÚroot¶ÔÓ¦Çø¼äexposeµÄ¸ñÊý
-	if (Wall[root].exposure <= 0) return 0;   //¼ôÖ¦
+int Paste(int root, int s, int e) {    //æŠŠposter[s, e]è´´åœ¨rootå¯¹åº”åŒºé—´exposeçš„æ ¼æ•°
+	if (Wall[root].exposure <= 0) return 0;   //å‰ªæž
 	if (Wall[root].L == s && Wall[root].R == e) {
-		int ret = Wall[root].exposure; //Ò»µ©match,¾Í°ÑÕâ¶ÎµÄexposure¼õ¹â,
-		Wall[root].exposure = 0;       //..ËüµÄµÍ¼¶½áµãÈ«²¿×Ô¶¯×÷·Ï,46ÐÐ·µ»Ø
+		int ret = Wall[root].exposure; //ä¸€æ—¦match,å°±æŠŠè¿™æ®µçš„exposureå‡å…‰,
+		Wall[root].exposure = 0;       //..å®ƒçš„ä½Žçº§ç»“ç‚¹å…¨éƒ¨è‡ªåŠ¨ä½œåºŸ,46è¡Œè¿”å›ž
 		return ret;
 	}
 	int exposure_sub;
@@ -53,47 +53,47 @@ int Paste(int root, int s, int e) {    //°Ñposter[s, e]ÌùÔÚroot¶ÔÓ¦Çø¼äexposeµÄ¸
 	else if (s >= Wall[root].Mid() + 1) exposure_sub = Paste(Right(root), s, e);
 	else exposure_sub = Paste(Left(root), s, Wall[root].Mid()) +
 		Paste(Right(root), Wall[root].Mid() + 1, e);
-	Wall[root].exposure -= exposure_sub;   //¡¾Bug2¡¿±ð¼õÈ«²¿s~e,Ö»¼õ×Ó½áµãexposure²¿·Ö
+	Wall[root].exposure -= exposure_sub;   //ã€Bug2ã€‘åˆ«å‡å…¨éƒ¨s~e,åªå‡å­ç»“ç‚¹exposureéƒ¨åˆ†
 	return exposure_sub;
 }
 
 int main() {
 	int C;	cin >> C;
 	while (C--) {
-		memset(newTree, 0, sizeof(newTree));  //¡¾BUG0¡¿×¢ÒâÃ¿´Îcase³õÊ¼»¯È«¾Ö±äÁ¿
+		memset(newTree, 0, sizeof(newTree));  //ã€BUG0ã€‘æ³¨æ„æ¯æ¬¡caseåˆå§‹åŒ–å…¨å±€å˜é‡
 		visited.reset();
 		int cnt = 0, N;
 		vector<int> v;
 		int s[MAX_POST], e[MAX_POST];
 		cin >> N;
 
-		//¼ÇÂ¼²åÈëµÄº£±¨,·´Ïò²åÈë
+		//è®°å½•æ’å…¥çš„æµ·æŠ¥,åå‘æ’å…¥
 		for (int i = 1; i <= N; i++) {
 			int s_, e_;
 			scanf("%d %d", &s_, &e_);
-			s[N + 1 - i] = s_, e[N + 1 - i] = e_;  //ÏÈÊäÈëµÄ·Åseºó±ß,ºóÊäÈëµÄ·ÅseÇ°±ß
+			s[N + 1 - i] = s_, e[N + 1 - i] = e_;  //å…ˆè¾“å…¥çš„æ”¾seåŽè¾¹,åŽè¾“å…¥çš„æ”¾seå‰è¾¹
 			v.push_back(s_); v.push_back(e_);
 		}
 
-		//½øÐÐÀëÉ¢»¯,ÓÃnewTree½«Çø¼ä{ MAX }ÔªËØÓ³Éäµ½Çø¼ä{ 4N }ÉÏ,¼õÉÙÊ÷µÄÉî¶È
+		//è¿›è¡Œç¦»æ•£åŒ–,ç”¨newTreeå°†åŒºé—´{ MAX }å…ƒç´ æ˜ å°„åˆ°åŒºé—´{ 4N }ä¸Š,å‡å°‘æ ‘çš„æ·±åº¦
 		sort(v.begin(), v.end());
 		auto it = v.begin();
-		for (int i = -1; it != v.end(); ++it) { //¡¾BUG1¡¿×¢ÒâÏàÁÚ/ÖØºÏ¶Ëµã¶ÔÇø¼ä·ÖÅäµÄÒªÇó
-			if (visited[*it]) {  }              //newTree[*it]ÒÑ¾­±»·ÃÎÊ¹ýÁË,É¶Ò²²»ÓÃ×ö
-			else if (visited[(*it) - 1] || i == -1) {  //newTreeÖÐµÚ*it-1ºÅÒÑ±»·ÃÎÊ¹ý
+		for (int i = -1; it != v.end(); ++it) { //ã€BUG1ã€‘æ³¨æ„ç›¸é‚»/é‡åˆç«¯ç‚¹å¯¹åŒºé—´åˆ†é…çš„è¦æ±‚
+			if (visited[*it]) {  }              //newTree[*it]å·²ç»è¢«è®¿é—®è¿‡äº†,å•¥ä¹Ÿä¸ç”¨åš
+			else if (visited[(*it) - 1] || i == -1) {  //newTreeä¸­ç¬¬*it-1å·å·²è¢«è®¿é—®è¿‡
 				i++;
 				newTree[*it] = i;
 				visited.set(*it);
 			}
-			else {    //newTreeÖÐ*itÇ°Ò»¸öÔªËØ»¹Ã»ÓÐ±»·ÃÎÊ¹ý
+			else {    //newTreeä¸­*itå‰ä¸€ä¸ªå…ƒç´ è¿˜æ²¡æœ‰è¢«è®¿é—®è¿‡
 				i = i + 2;
 				newTree[*it] = i;
 				visited.set(*it);
 			}
-		}         //     { MAX } ---newTree--> { 4*N } (¹þÏ£±í£¿)
+		}         //     { MAX } ---newTree--> { 4*N } (å“ˆå¸Œè¡¨ï¼Ÿ)
 		BuildTree(0, 0, 4 * N);
 
-		//Ìùº£±¨
+		//è´´æµ·æŠ¥
 		for (int i = 1; i <= N; i++) {
 			int expose = Paste(0, newTree[s[i]], newTree[e[i]]);
 			if (expose) cnt++;
@@ -101,7 +101,7 @@ int main() {
 		cout << cnt << endl;
 	}
 	return 0;
-}/* ÀÏÊÇWrong AnswerÔõÃ´°ì,Âß¼­Ì«¸´ÔÓ,²»Ö¸ÍûÖ»Í¨¹ý¶Á´úÂëdebug£º
- 1. ÈÏÕæ¶ÁÌâ,¼ì²é±ß½çÌõ¼þ(Êý×é¿ªÐ¡ÁË£¿)ºÍÌØÊâ²ÎÊý(0,¸ºÊýµÈ)
- 2. ×Ô¼ºÔìÊý¾Ý×Ô¼ºÅÜÅÜ¿´,ÔìÌØÊâÊý¾ÝÊ¹¾¢ÅÜ...ÖÕÓÚ³ö´íÁË£¿¹§Ï²Äã
+}/* è€æ˜¯Wrong Answeræ€Žä¹ˆåŠž,é€»è¾‘å¤ªå¤æ‚,ä¸æŒ‡æœ›åªé€šè¿‡è¯»ä»£ç debugï¼š
+ 1. è®¤çœŸè¯»é¢˜,æ£€æŸ¥è¾¹ç•Œæ¡ä»¶(æ•°ç»„å¼€å°äº†ï¼Ÿ)å’Œç‰¹æ®Šå‚æ•°(0,è´Ÿæ•°ç­‰)
+ 2. è‡ªå·±é€ æ•°æ®è‡ªå·±è·‘è·‘çœ‹,é€ ç‰¹æ®Šæ•°æ®ä½¿åŠ²è·‘...ç»ˆäºŽå‡ºé”™äº†ï¼Ÿæ­å–œä½ 
  */

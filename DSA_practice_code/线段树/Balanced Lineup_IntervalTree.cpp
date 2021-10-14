@@ -1,7 +1,7 @@
 /* http://bailian.openjudge.cn/practice/3438/
-¸ø¶¨N¸öÊıA1,A2 ¡­ AN, Q´ÎÇóÈÎÒ»Çø¼ä[Ai, Aj]ÖĞ×î´óÊıºÍ×îĞ¡ÊıµÄ²î
+ç»™å®šNä¸ªæ•°A1,A2 â€¦ AN, Qæ¬¡æ±‚ä»»ä¸€åŒºé—´[Ai, Aj]ä¸­æœ€å¤§æ•°å’Œæœ€å°æ•°çš„å·®
 */
-//ÓĞ¿ÕÓÃÊ÷×´Êı×éÊÔÊÔ
+//æœ‰ç©ºç”¨æ ‘çŠ¶æ•°ç»„è¯•è¯•
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<limits.h>
@@ -11,12 +11,12 @@
 using namespace std;
 const int MAX = 800010;
 int maxValue = INT_MIN, minValue = INT_MAX;
-class CNode {       //Ò»¸ö²»×ãÔÚÓÚÖ»ÊÊÓÃÓÚ¾²Ì¬Êı×é,·ñÔò½áµãÇø¼ä¸ÄÆğÀ´¸´ÔÓ¶È¸ĞÈË
+class CNode {       //ä¸€ä¸ªä¸è¶³åœ¨äºåªé€‚ç”¨äºé™æ€æ•°ç»„,å¦åˆ™ç»“ç‚¹åŒºé—´æ”¹èµ·æ¥å¤æ‚åº¦æ„Ÿäºº
 public:
 	int L, R, maxV = INT_MIN, minV = INT_MAX;
-	int Mid() { return (L + R) / 2; }  //MidÇó¸Ã½Úµã¶ÔÓ¦Çø¼äÖĞÖµ
+	int Mid() { return (L + R) / 2; }  //Midæ±‚è¯¥èŠ‚ç‚¹å¯¹åº”åŒºé—´ä¸­å€¼
 }tree[MAX];
-void BuildTree(int root, int L, int R) {   //½¨Ê÷
+void BuildTree(int root, int L, int R) {   //å»ºæ ‘
 	tree[root].L = L;
 	tree[root].R = R;
 	if (L == R)return;
@@ -24,17 +24,17 @@ void BuildTree(int root, int L, int R) {   //½¨Ê÷
 	BuildTree(Left(root), L, mid);
 	BuildTree(Right(root), mid + 1, R);
 }
-void Insert(int root, int i, int v) {     //½«ÖµÎªvµÄµÚi¸öÊı²åÈëÒÔrootÎª¸ùµÄÏß¶ÎÊ÷
-	if (tree[root].L == tree[root].R) {   //µ½´ïÒ¶×Ó½áµã,¿ÉÒÔ¸³ÖµÁË
+void Insert(int root, int i, int v) {     //å°†å€¼ä¸ºvçš„ç¬¬iä¸ªæ•°æ’å…¥ä»¥rootä¸ºæ ¹çš„çº¿æ®µæ ‘
+	if (tree[root].L == tree[root].R) {   //åˆ°è¾¾å¶å­ç»“ç‚¹,å¯ä»¥èµ‹å€¼äº†
 		tree[root].minV = tree[root].maxV = v; return;
 	}
-	tree[root].minV = min(tree[root].minV, v);  //¸üĞÂÁËtree[root]µÄÖµ,
-	tree[root].maxV = max(tree[root].maxV, v);  //Ã»Íê£¡»¹Òª¼ÌĞøÍùÏÂ¸üĞÂ
-	if (i <= tree[root].Mid()) Insert(Left(root), i, v);  //µÚi¸ö½áµãv²åµ½×ó×ÓÊ÷ÖĞ
-	else Insert(Right(root), i, v);    //µÚi¸ö½áµãv²åµ½ÓÒ×ÓÊ÷ÖĞ
+	tree[root].minV = min(tree[root].minV, v);  //æ›´æ–°äº†tree[root]çš„å€¼,
+	tree[root].maxV = max(tree[root].maxV, v);  //æ²¡å®Œï¼è¿˜è¦ç»§ç»­å¾€ä¸‹æ›´æ–°
+	if (i <= tree[root].Mid()) Insert(Left(root), i, v);  //ç¬¬iä¸ªç»“ç‚¹væ’åˆ°å·¦å­æ ‘ä¸­
+	else Insert(Right(root), i, v);    //ç¬¬iä¸ªç»“ç‚¹væ’åˆ°å³å­æ ‘ä¸­
 }
-void Query(int root, int s, int e) {   //²éÑ¯Çø¼ä[s, e]µÄ×î´ó×îĞ¡Öµ,¼ÇÂ¼ÔÚÈ«¾Ö±äÁ¿Àï
-	if (tree[root].minV >= minValue && tree[root].maxV <= maxValue) return;  //¼ôÖ¦
+void Query(int root, int s, int e) {   //æŸ¥è¯¢åŒºé—´[s, e]çš„æœ€å¤§æœ€å°å€¼,è®°å½•åœ¨å…¨å±€å˜é‡é‡Œ
+	if (tree[root].minV >= minValue && tree[root].maxV <= maxValue) return;  //å‰ªæ
 	if (tree[root].L == s && tree[root].R == e) {
 		maxValue = max(maxValue, tree[root].maxV);
 		minValue = min(minValue, tree[root].minV);

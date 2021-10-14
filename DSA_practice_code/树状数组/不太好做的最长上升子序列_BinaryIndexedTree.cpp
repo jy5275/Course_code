@@ -1,5 +1,5 @@
 /* http://dapractise.openjudge.cn/2018wk2/3/ */
-//ACÁË,µ«ÈÔ²»ÊÇºÜ¶®ÈçºÎ×öµ½µÄ£¿£¿£¿
+//ACäº†,ä½†ä»ä¸æ˜¯å¾ˆæ‡‚å¦‚ä½•åšåˆ°çš„ï¼Ÿï¼Ÿï¼Ÿ
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<list>

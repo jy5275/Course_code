@@ -18,7 +18,7 @@ int N, K;
 bitset<MAXN + 2> visited;
 class CStep {
 public:
-	int x, father, steps;    //currentStepsÎªµ½´ïxËùĞèµÄ²½Êı
+	int x, father, steps;    //currentStepsä¸ºåˆ°è¾¾xæ‰€éœ€çš„æ­¥æ•°
 	CStep(int x_, int s_, int f_ = -1) :x(x_), steps(s_), father(f_) {
 		visited.set(x);
 	} 
@@ -26,7 +26,7 @@ public:
 bool operator<(const CStep &s1, const CStep &s2) {
 	return s1.x < s2.x;
 }
-queue<CStep> q;      //open±í
+queue<CStep> q;      //openè¡¨
 stack<CStep> close;
 stack<int> result;
 int main() {
@@ -35,35 +35,35 @@ int main() {
 	q.push(CStep(N, 0));
 	int currentStep = 1, succeed = 0;
 	CStep current = q.front(); 
-	while (!q.empty()) {    //Ö»Òª¶ÓÁĞ·Ç¿Õ,¾ÍÄÜ¼ÌĞø£¡
-		current = q.front();      //1.È¡³öÊ×½Úµã
+	while (!q.empty()) {    //åªè¦é˜Ÿåˆ—éç©º,å°±èƒ½ç»§ç»­ï¼
+		current = q.front();      //1.å–å‡ºé¦–èŠ‚ç‚¹
 		close.push(current);
 		currentStep = current.steps;
-		if (current.x == K) {     //2.ÅĞ¶ÏÄ¿±ê×´Ì¬
+		if (current.x == K) {     //2.åˆ¤æ–­ç›®æ ‡çŠ¶æ€
 			succeed = 1;
 			break;
 		}   
-		if (current.x > 1 && !visited[current.x - 1])      //3.À©Õ¹ĞÂ½Úµã 
-			q.push(CStep(current.x - 1, currentStep, current.x)); //²»Òªµİ¹éË¼Â·!ÏÈÑ¹Èë¶ÓÁĞ
+		if (current.x > 1 && !visited[current.x - 1])      //3.æ‰©å±•æ–°èŠ‚ç‚¹ 
+			q.push(CStep(current.x - 1, currentStep, current.x)); //ä¸è¦é€’å½’æ€è·¯!å…ˆå‹å…¥é˜Ÿåˆ—
 		if (current.x < MAXN && !visited[current.x + 1])   //A currentStep forward from s
 			q.push(CStep(current.x + 1, currentStep, current.x));
 		if (2 * current.x <= MAXN && !visited[2 * current.x]) //A double currentStep from s
 			q.push(CStep(2 * current.x, currentStep, current.x));
-		q.pop();           //4.µ¯³öÊ×½Úµã
+		q.pop();           //4.å¼¹å‡ºé¦–èŠ‚ç‚¹
 	}
-	if (succeed == 0) {    //5.ÉèÖÃÊ§°ÜÊä³ö    
+	if (succeed == 0) {    //5.è®¾ç½®å¤±è´¥è¾“å‡º    
 		cout << "Impossible" << endl;
 		return 0;
 	}
 	else {
-		CStep tmp = close.top();     //»ØËİÉú³Éresult
+		CStep tmp = close.top();     //å›æº¯ç”Ÿæˆresult
 		result.push(tmp.x);
-		while (!close.empty()) {     //´ÓcloseÖĞÖğ¸öÌÍ³öÀ´¿´ÊÇ²»ÊÇÔÚÁ´ÌõÉÏ(x=tmp.father)
-			if (close.top().x == tmp.father) {    //1.ÅĞ¶ÏÁÙÊ±Ä¿±ê×´Ì¬,Ñ¹Õ»
+		while (!close.empty()) {     //ä»closeä¸­é€ä¸ªæå‡ºæ¥çœ‹æ˜¯ä¸æ˜¯åœ¨é“¾æ¡ä¸Š(x=tmp.father)
+			if (close.top().x == tmp.father) {    //1.åˆ¤æ–­ä¸´æ—¶ç›®æ ‡çŠ¶æ€,å‹æ ˆ
 				tmp = close.top();
 				result.push(tmp.x);
 			}
-			close.pop();             //2.µ¯³öÊ×½Úµã
+			close.pop();             //2.å¼¹å‡ºé¦–èŠ‚ç‚¹
 		}
 		while (!result.empty()) {
 			cout << result.top();
@@ -73,6 +73,6 @@ int main() {
 		}
 	}
 	clock_t endTime = clock();
-	cout<< "³ÌĞò¶ÎÔËĞĞÊ±¼ä:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+	cout<< "ç¨‹åºæ®µè¿è¡Œæ—¶é—´:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 	return 0;
 }

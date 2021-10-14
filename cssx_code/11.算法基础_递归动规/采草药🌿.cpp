@@ -12,47 +12,52 @@
 #include<iomanip>
 #include<fstream>
 using namespace std;
-//¡ïºËĞÄ×´Ì¬×ªÒÆ·½³Ì:£¨ÔÚÊµ¼ÊÊµÏÖÖĞ·ÖÀë£©¡ï
-//¡ïMaxValue(m, t) = max(MaxValue(m - 1, t), MaxValue(m - 1, t - t[m]) + v[m]);¡ï
+//â˜…æ ¸å¿ƒçŠ¶æ€è½¬ç§»æ–¹ç¨‹:ï¼ˆåœ¨å®é™…å®ç°ä¸­åˆ†ç¦»ï¼‰â˜…
+//â˜…MaxValue(m, t) = max(MaxValue(m - 1, t), MaxValue(m - 1, t - t[m]) + v[m]);â˜…
 int T, M, maxValue[102][1002], cost[102], value[102];
-int calcMaxValue(int m, int t) {       //¼ÆËãÔÚÇ°mÖÖ²İÒ©ÖĞ²É,tÊ±¼äÄÚ¿É²ÉµÄ×î´óvalueÖµ
+
+//è®¡ç®—åœ¨å‰ [m] ç§è‰è¯ä¸­é‡‡,[t] æ—¶é—´å†…å¯é‡‡çš„æœ€å¤§ [value] å€¼
+int calcMaxValue(int m, int t) { 
 	if (t == 0 || m == 0) return 0;
 	if (maxValue[m][t] != -1) return maxValue[m][t];
+
 	int nopick, dopick = 0;
-	nopick = calcMaxValue(m - 1, t);	//²»²ÉÕâÖÖÒ©µÄ×î´óvalue
-	if (t >= cost[m])					//Ê±¼ä¹»²ÉmºÅ²İÒ©
+	nopick = calcMaxValue(m - 1, t);	// ä¸é‡‡è¿™ç§è¯çš„æœ€å¤§value
+	if (t >= cost[m])					// æ—¶é—´å¤Ÿé‡‡må·è‰è¯
 		dopick = calcMaxValue(m - 1, t - cost[m]) + value[m];
-	maxValue[m][t] = max(nopick, dopick);	//¡¾²É»¹ÊÇ²»²É£¿ÕâÊÇÒ»¸öÎÊÌâ¡¿
+	maxValue[m][t] = max(nopick, dopick);	//ã€é‡‡è¿˜æ˜¯ä¸é‡‡ï¼Ÿè¿™æ˜¯ä¸€ä¸ªé—®é¢˜ã€‘
+	
 	return maxValue[m][t];
 }
+
 int main() {
 	cin >> T >> M;
 	for (int i = 1; i <= M; i++)
 		cin >> cost[i] >> value[i];
 	//clock_t startTime = clock();
 
-	//-----------µİ¹é·½°¸---------------------------------
+	//-----------é€’å½’æ–¹æ¡ˆ---------------------------------
 	memset(maxValue, -1, sizeof(maxValue));
 	cout << calcMaxValue(M, T) << endl;
-	//-----------¶¯¹æ·½°¸---------------------------------
+	//-----------åŠ¨è§„æ–¹æ¡ˆ---------------------------------
 	for (int i = 1; i <= M; i++) maxValue[i][0] = 0;
 	for (int i = 0; i <= T; i++) maxValue[0][i] = 0;
 	for (int i = 1; i <= M; i++) {
 		for (int j = 1; j <= T; j++) {
-			int nopick = maxValue[i - 1][j];	//²»²ÉiºÅ²İÒ©,maxValueÍ¬ÎŞi²İÒ©Ê±
+			int nopick = maxValue[i - 1][j];	// ä¸é‡‡iå·è‰è¯, maxValueåŒæ— iè‰è¯æ—¶
 			int dopick;
 			if (j >= cost[i])
-				dopick = maxValue[i - 1][j - cost[i]] + value[i];	//¡ïºËĞÄ×´Ì¬×ªÒÆ·½³Ì¡ï
-			maxValue[i][j] = max(dopick, nopick);	// To pick or not to pick£¿That's a Q
+				dopick = maxValue[i - 1][j - cost[i]] + value[i];	// â˜…æ ¸å¿ƒçŠ¶æ€è½¬ç§»æ–¹ç¨‹â˜…
+			maxValue[i][j] = max(dopick, nopick);	// To pick or not to pick? That's a Q
 		}
 	}
 	cout << maxValue[M][T] << endl;
 	//----------------------------------------------------
 	//clock_t endTime = clock();
-	//cout<< "³ÌĞò¶ÎÔËĞĞÊ±¼ä:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+	//cout<< "ç¨‹åºæ®µè¿è¡Œæ—¶é—´:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 	return 0;
 }/*
- ×¢ÒâµÍ¼¶´íÎó£¡Æ©Èça[i]<=jĞ´³Éa[i]<=i,a[n_case]Ğ´³Éa[n]ÕâÖÖ¾Í±­¾ßÁË,ÖğĞĞÖ´ĞĞ°ëÌì²Å·¢ÏÖµÃÁË...
- ³öÏÖWA»òRE,²âÊÔ¡¾ÌØÊâ¡¿Êı¾İ¡ú·¢ÏÖ´íÎó¡úÖğĞĞÖ´ĞĞ¡údebug,
- Èç¹ûËã·¨Ë¼Â·²»Çå¿ÉÒÔ¿¼ÂÇÔÚµİ¹é/¶¯¹æÖÖ»»Ò»ÖÖ
+ æ³¨æ„ä½çº§é”™è¯¯ï¼è­¬å¦‚a[i]<=jå†™æˆa[i]<=i,a[n_case]å†™æˆa[n]è¿™ç§å°±æ¯å…·äº†,é€è¡Œæ‰§è¡ŒåŠå¤©æ‰å‘ç°å¾—äº†...
+ å‡ºç°WAæˆ–RE,æµ‹è¯•ã€ç‰¹æ®Šã€‘æ•°æ®â†’å‘ç°é”™è¯¯â†’é€è¡Œæ‰§è¡Œâ†’debug,
+ å¦‚æœç®—æ³•æ€è·¯ä¸æ¸…å¯ä»¥è€ƒè™‘åœ¨é€’å½’/åŠ¨è§„ç§æ¢ä¸€ç§
  */

@@ -31,9 +31,9 @@ int main() {
 				cin >> peanut[i][j];
 		}
 
-		//----------µÝ¹é·½°¸--------------------------------------------------
+		//----------é€’å½’æ–¹æ¡ˆ--------------------------------------------------
 		cout << calcMaxNut(1, 1) << endl;
-		//----------¶¯¹æ·½°¸--------------------------------------------------
+		//----------åŠ¨è§„æ–¹æ¡ˆ--------------------------------------------------
 		for (int i = r; i >= 1; i--) {
 			for (int j = c; j > 0; j--) {
 				maxNut[i][j] = peanut[i][j];
@@ -48,6 +48,6 @@ int main() {
 	clock_t startTime = clock();
 
 	clock_t endTime = clock();
-	//cout<< "³ÌÐò¶ÎÔËÐÐÊ±¼ä:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+	//cout<< "ç¨‹åºæ®µè¿è¡Œæ—¶é—´:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 	return 0;
 }

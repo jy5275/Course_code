@@ -6,13 +6,13 @@
 #define Left(p) 2*(p)+1
 #define Right(p) 2*(p)+2
 using namespace std;
-/*¡¾ÑÓ³Ù¸üĞÂ¡¿¸üĞÂÊ±Î´±ØÒª³¹µ×¸üĞÂ,ÍÆ³Ùµ½²éÑ¯Ê±²ÅÈ¥¸üĞÂ×ãÒÔÓ¦¸¶²éÑ¯µÄ²¿·Ö */
+/*ã€å»¶è¿Ÿæ›´æ–°ã€‘æ›´æ–°æ—¶æœªå¿…è¦å½»åº•æ›´æ–°,æ¨è¿Ÿåˆ°æŸ¥è¯¢æ—¶æ‰å»æ›´æ–°è¶³ä»¥åº”ä»˜æŸ¥è¯¢çš„éƒ¨åˆ† */
 const int MAX = 100010;
 class CNode {
 public:
 	int L, R;
-	long long sum = 0;	//ÒÑÏÂ´«µÄÇø¼äºÍ£¡
-	long long inc = 0;	//Î´ÏÂ´«µÄÇø¼äºÍ£¡
+	long long sum = 0;	//å·²ä¸‹ä¼ çš„åŒºé—´å’Œï¼
+	long long inc = 0;	//æœªä¸‹ä¼ çš„åŒºé—´å’Œï¼
 	int Mid() { return (L + R) / 2; }
 }tree[4 * MAX + 10];
 
@@ -25,12 +25,12 @@ void BuildTree(int root, int L, int R) {
 	BuildTree(Right(root), mid + 1, R);
 }
 
-//Ã¿¸ö½áµãµÄ¡¾sum + inc*len¡¿+¡¾ËùÓĞÉÏ²ãinc¡¿²ÅÊÇ¸ÃÊ±¿ÌÕıÈ·Çø¼äºÍ£¡
-void Add(int root, int a, int b, long long c) {		//¸øÇø¼ä[a, b]µÄÔªËØÃ¿¸ö¼Óc
-	if (tree[root].L == a && tree[root].R == b) {	//Ç¡ºÃ¸²¸Ç==>¸üĞÂinc
+//æ¯ä¸ªç»“ç‚¹çš„ã€sum + inc*lenã€‘+ã€æ‰€æœ‰ä¸Šå±‚incã€‘æ‰æ˜¯è¯¥æ—¶åˆ»æ­£ç¡®åŒºé—´å’Œï¼
+void Add(int root, int a, int b, long long c) {		//ç»™åŒºé—´[a, b]çš„å…ƒç´ æ¯ä¸ªåŠ c
+	if (tree[root].L == a && tree[root].R == b) {	//æ°å¥½è¦†ç›–==>æ›´æ–°inc
 		tree[root].inc += c; return;
 	}
-	//²»ÄÜ¸²¸Ç==>ÍùÏÂ´«£¡
+	//ä¸èƒ½è¦†ç›–==>å¾€ä¸‹ä¼ ï¼
 	tree[root].sum += (b + 1 - a)*c;
 	if (b <= tree[root].Mid())
 		Add(Left(root), a, b, c);
@@ -42,13 +42,13 @@ void Add(int root, int a, int b, long long c) {		//¸øÇø¼ä[a, b]µÄÔªËØÃ¿¸ö¼Óc
 	}
 }
 
-//ÏûÈ¥Ò»Â·ÉÏËùÓĞinc
-long long QuerySum(int root, int a, int b) {	//ÇórootÏÂ[a, b]Çø¼äºÍ
+//æ¶ˆå»ä¸€è·¯ä¸Šæ‰€æœ‰inc
+long long QuerySum(int root, int a, int b) {	//æ±‚rootä¸‹[a, b]åŒºé—´å’Œ
 	if (tree[root].L == a && tree[root].R == b)
 		return tree[root].inc * (b + 1 - a) + tree[root].sum;
 	int len = tree[root].R + 1 - tree[root].L;
 
-	//¸Ã½áµãinc×ªsum,ÏÂ´«Çø¼äºÍ
+	//è¯¥ç»“ç‚¹incè½¬sum,ä¸‹ä¼ åŒºé—´å’Œ
 	tree[root].sum += tree[root].inc * len;
 	tree[Left(root)].inc += tree[root].inc;
 	tree[Right(root)].inc += tree[root].inc;

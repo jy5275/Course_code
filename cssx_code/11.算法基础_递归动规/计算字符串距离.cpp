@@ -9,21 +9,24 @@
 #include<fstream>
 using namespace std;
 string s1, s2;
-int change[1001][1001] = { 0 };   //change±£´æs1Ç°i×Ó´®Óës2Ç°j×Ó´®µÄ¾àÀë
+int change[1001][1001] = { 0 };   //changeä¿å­˜s1å‰iå­ä¸²ä¸Žs2å‰jå­ä¸²çš„è·ç¦»
 int triMin(int a, int b, int c) { return min(min(a, b), c); }
+
 int calcChange(int n, int m) {
 	if (change[n][m] != -1) return change[n][m];
+	
 	int ans = 0;
-	if (n == 0 || m == 0)		//case1£º±ß½çÌõ¼þ
+	if (n == 0 || m == 0)		//case1ï¼šè¾¹ç•Œæ¡ä»¶
 		ans = max(n, m);
-	else if (s1[n] == s2[m])	//case2£ºÄ©×Ö·ûÍ¬
+	else if (s1[n] == s2[m])	//case2ï¼šæœ«å­—ç¬¦åŒ
 		ans = calcChange(n - 1, m - 1);
-	else		//case3£ºs1ÌíÄ©×Ö·û or s2ÌíÄ©×Ö·û or s1s2ÐÞ¸ÄÄ©×Ö·û
-		ans = triMin(calcChange(n - 1, m),		//How to change£¿That's a Q
+	else		//case3ï¼šs1æ·»æœ«å­—ç¬¦ or s2æ·»æœ«å­—ç¬¦ or s1s2ä¿®æ”¹æœ«å­—ç¬¦
+		ans = triMin(calcChange(n - 1, m),		//How to changeï¼ŸThat's a Q
 			calcChange(n, m - 1), calcChange(n - 1, m - 1)) + 1;
 	change[n][m] = ans;
 	return ans;
 }
+
 int main() {
 	int n;
 	cin >> n;
@@ -32,17 +35,17 @@ int main() {
 		int len1 = s1.size(), len2 = s2.size();
 		s1 = " " + s1; s2 = " " + s2;
 
-		//-----------µÝ¹é·½°¸---------------------------------
+		//-----------é€’å½’æ–¹æ¡ˆ---------------------------------
 		memset(change, -1, sizeof(change));
 		cout << calcChange(len1, len2) << endl;
-		//-----------¶¯¹æ·½°¸---------------------------------
+		//-----------åŠ¨è§„æ–¹æ¡ˆ---------------------------------
 		for (int i = 0; i <= len1; i++) {
-			for (int j = 0; j <= len2; j++) {   //¿´¿´s1Ç°×ºiºÍs2Ç°×ºj
+			for (int j = 0; j <= len2; j++) {   //çœ‹çœ‹s1å‰ç¼€iå’Œs2å‰ç¼€j
 				if (i == 0 || j == 0) 
 					change[i][j] = max(i, j);
-				else if (s1[i] == s2[j])        //Èôs1µÄiÎ»Óës2µÄjÎ»ÏàÍ¬,´ËÎ»²»ÓÃÐÞ¸Ä£¡
+				else if (s1[i] == s2[j])        //è‹¥s1çš„iä½ä¸Žs2çš„jä½ç›¸åŒ,æ­¤ä½ä¸ç”¨ä¿®æ”¹ï¼
 					change[i][j] = change[i - 1][j - 1];
-				else               //Èç¹ûs1µÄiÎ»Óës2µÄjÎ»²»Í¬,ÈýÖÖÂ·¾¶Ñ¡×î¶ÌµÄÒ»Ìõ£¡
+				else               //å¦‚æžœs1çš„iä½ä¸Žs2çš„jä½ä¸åŒ,ä¸‰ç§è·¯å¾„é€‰æœ€çŸ­çš„ä¸€æ¡ï¼
 					change[i][j] = triMin(change[i - 1][j],
 						change[i][j - 1], change[i - 1][j - 1]) + 1;
 			}
@@ -53,8 +56,8 @@ int main() {
 
 	//clock_t startTime = clock();
 	//clock_t endTime = clock();
-	//cout<< "³ÌÐò¶ÎÔËÐÐÊ±¼ä:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+	//cout<< "ç¨‹åºæ®µè¿è¡Œæ—¶é—´:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 	return 0;
 }/*
- ÕæÊÇÏë²»µ½ÕâÖÖÎÊÌâ¶¼ÄÜÓÃµÝ¹é½â´ð
+ çœŸæ˜¯æƒ³ä¸åˆ°è¿™ç§é—®é¢˜éƒ½èƒ½ç”¨é€’å½’è§£ç­”
  */

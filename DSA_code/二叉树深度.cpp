@@ -12,28 +12,29 @@ const int MAX = 1 << 12;
 int n, No = 0;
 class CNode {
 public:
-	int name, layer = 0;
+	int name, level = 0;
 	CNode *leftchild = NULL, *rightchild = NULL;
 };
 CNode *tree = new CNode[12];
 int Depth() {
 	queue<CNode*> q;
 	int currentLayer = 0;
-	tree[1].layer = 1;
+	tree[1].level = 1;
+
 	q.push(tree + 1);  //根结点地址入队
 	while (!q.empty()) {
 		CNode * now = q.front(); q.pop();
-		currentLayer = now->layer;
-		//if (!now->leftchild && !now->rightchild) return currentLayer;
+		currentLayer = now->level;
 		if (now->leftchild) {
-			now->leftchild->layer = currentLayer + 1;
+			now->leftchild->level = currentLayer + 1;
 			q.push(now->leftchild);
 		}
 		if (now->rightchild) {
-			now->rightchild->layer = currentLayer + 1;
+			now->rightchild->level = currentLayer + 1;
 			q.push(now->rightchild);
 		}
 	}
+	
 	return currentLayer;
 }
 int main() {
