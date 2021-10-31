@@ -15,38 +15,39 @@ public:
 	CNode * pChilds[LETTERS] = { NULL }, *pPrev = NULL;
 	bool badNode = false;
 }*pStart = NULL, *pRoot = NULL;
+// Start is above root, all its children are root
 
-void BuildDfa() {     //设置儿子的前缀指针与危险标识
+void BuildDfa() {     // set pPrev ptr
 	for (int i = 0; i < LETTERS; i++) pStart->pChilds[i] = pRoot;
 	pStart->pPrev = NULL;
-	pRoot->pPrev = pStart;     //tree[1]是root结点
+	pRoot->pPrev = pStart;
 	queue<CNode*> q;
 
-	q.push(pRoot);             //把&root压入deque
-	while (!q.empty()) {       //广搜设pPrev
-		CNode *pCurrent = q.front();		//【1】取队首元素
-		q.pop();							//【2】弹出队首元素
-		for (int i = 0; i < LETTERS; i++) {	//【3】压入新元素p(current的儿子)
+	q.push(pRoot);
+	while (!q.empty()) {       // Use BFS to set pPrev
+		CNode *pCurrent = q.front();		// 1. Fetch queue front elem
+		q.pop();							// 2. Pop it out
+		for (int i = 0; i < LETTERS; i++) {	// 3. Push new elem (all pCurrent's children)
 			CNode *p = pCurrent->pChilds[i];
-			if (!p)	continue;					//跳过没儿子的位置
+			if (p == NULL)	continue;
 			CNode *pPrev = pCurrent->pPrev;
-			while (pPrev->pChilds[i] == NULL)	//回溯,直到pPrev有i儿子
-				pPrev = pPrev->pPrev;			//(回溯到p=pStart肯定有)
-			p->pPrev = pPrev->pChilds[i];		//设置p-pPrev
-			if (p->pPrev->badNode)	//badNode？
+			while (pPrev->pChilds[i] == NULL)	// Backtrack until pPrev has child[i]
+				pPrev = pPrev->pPrev;			// (pStart must have so backtrack will finally stop)
+			p->pPrev = pPrev->pChilds[i];		// Set p-pPrev!
+			if (p->pPrev->badNode)	// badNode？--> should set!
 				p->badNode = true;
 			q.push(p);
 		}
 	}
 }
 
-void Insert(char *s) {      //把模式串s插入trie树(pRoot)中
+void Insert(char *s) {      // Insert pattern string s into Trie tree (pRoot)
 	CNode *p = pRoot;
-	for (int i = 0; s[i]; i++) {      //i在s串上前进->new新树->p前进
+	for (int i = 0; s[i]; i++) {      // Process through s -> new Node
 		int index = s[i] - 'a';
 		if (!p->pChilds[index]) 
 			p->pChilds[index] = new CNode();
-		p = p->pChilds[index];   //p前进(指向new出来的结点)
+		p = p->pChilds[index];
 	}
 	p->badNode = true;
 }
@@ -55,8 +56,8 @@ bool SearchDfa(char *s) {
 	CNode *p = pRoot;
 	for (int i = 0; s[i] != '\0'; i++) {
 		int index = s[i] - 'a';
-		while (p->pChilds[index] == NULL)	//如果p没i儿子就沿前缀指针链回溯,
-			p = p->pPrev;                   //..直到p有i儿子(回溯到p=pStart肯定有)
+		while (p->pChilds[index] == NULL)	// Backtrack until p has child[idx]
+			p = p->pPrev;                   // (must have when p=pStart)
 		p = p->pChilds[index];
 		if (p->badNode) return true;
 	}

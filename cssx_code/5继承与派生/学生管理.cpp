@@ -10,11 +10,8 @@ protected:		//派生类成员函数可访问【当前对象】的基类protected
 	int age;
 	char gender;
 public:
-	void PrintInfo() { 
-		cout << "Name: " << name << endl; 
-		cout << "ID: " << id << endl;
-		cout << "Age: " << age << endl;
-		cout << "Gender: " << gender << endl;
+	virtual void PrintInfo() {
+		printf("Name:%s, ID:%s, Age:%d, Gender:%c\n", name.c_str(), id.c_str(), age, gender);
 	}
 	void SetInfo(const string &n_, const string &id_, int age_, char g_){
 		name = n_; id = id_; age = age_; gender = g_;
@@ -37,10 +34,6 @@ public:
 		CStudent::SetInfo(n_, id_, age_, g_);
 		department = d_;
 	}
-	void F() {
-		CUndergraduate d;
-		d.age = 1;	//应该报错吧？？？？
-	}
 };
 
 class CProfessor;
@@ -56,9 +49,12 @@ class CProfessor {
 };
 
 int main() {
-	CUndergraduate s2;
-	s2.SetInfo("JY", "1600013239", 21, 'M', "Computer Science");
-	s2.QualifiedForBaoyan();
-	s2.PrintInfo();
+	CStudent *p = new CUndergraduate();
+	CUndergraduate *pu = (CUndergraduate*)p;
+	pu->SetInfo("JY", "1600013239", 21, 'M', "Computer Science");
+	pu->QualifiedForBaoyan();
+	p->PrintInfo();
+	cout << "main addr:" << (void*)main;
+	// printf("%p\n", main);
 	return 0;
 }
