@@ -5,13 +5,14 @@
 #include <memory>
 #include <list>
 #include <mutex>
+#include <unistd.h>
 #include <condition_variable>
 using namespace std;
 
 template<typename T>
 class ProAndCon {
     list<T> m_queue;
-    mutex m_mutex;  //全局互斥锁
+    mutex mu;  //全局互斥锁
     condition_variable m_notEmpty; //全局条件变量（不为空）
     condition_variable m_notFull;  //全局条件变量（不为满）
     int m_maxSize;  //队列最大容量
@@ -29,8 +30,14 @@ public:
     }
     ProAndCon() = default;
 
-    void produce(const T& v) {
-        unique_lock<mutex> lck(m_mutex);
+    /* Producer:
+       1. Acquire global mutex
+       2. Wait until not full
+       3. Put the obj
+       4. Notify that buffer is not empty
+    */
+    void produceOne(const T& v) {
+        unique_lock<mutex> lck(mu);
 
         while(isFull()) {
             cout << "Buffer is full, waiting..." << endl;
@@ -41,15 +48,14 @@ public:
         m_notEmpty.notify_one();
     }
 
-    T consume() {
-        unique_lock<mutex> locker(m_mutex);
+    T consumeOne() {
+        unique_lock<mutex> lck(mu);
         while(isEmpty()) {
             cout << "Buffer is empty, waiting..." << endl;
             // 消费者等待"缓冲区不为空"这一条件发生
-            m_notEmpty.wait(locker);
+            m_notEmpty.wait(lck);
         }
         T v = m_queue.front();
-        printf("num = %d\n", v);
         m_queue.pop_front();
         m_notFull.notify_one();
         return v;
@@ -57,24 +63,32 @@ public:
 };
 
 int main() {
-    const int NUM = 5;
+    const int NUM = 10;
     thread producers[NUM];
-    ProAndCon<int> test(10);
+    ProAndCon<int> test(3);
+
+    // Launch producers
     for (int i=0; i<NUM; i++) {
-        producers[i] = thread(&ProAndCon<int>::produce, &test, i);
+        producers[i] = thread(&ProAndCon<int>::produceOne, &test, i*i);
     }
-    function<bool(int)> f = [&test](int n)->bool{
+
+    // Launch one consumer
+    function<bool(int)> consumeFun = [&test](int n)->bool{
         for (int i=0; i<n; i++) {
-            test.consume();
+            int v = test.consumeOne();
+            sleep(1);
+            printf("[%d] num = %d\n", i, v);
         }
         return true;
     };
-    auto consumer = thread(f, NUM);
+    auto consumer = thread(consumeFun, NUM);
 
+    // Wait for all threads exit
     for (int i=0; i<NUM; i++) {
         producers[i].join();
     }
     consumer.join();
+
     printf("Finished\n");
     return 0;
 }
