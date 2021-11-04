@@ -1,4 +1,4 @@
-#pragma GCC diagnostic error "-std=c++11"
+// #pragma GCC diagnostic error "-std=c++11"
 #include <iostream>
 #include <algorithm>
 #include <memory>
